@@ -243,6 +243,7 @@ int main(int argc, char *argv[])
         NX = atoi(argv[1]);
         NY = atoi(argv[2]);
     }
+
     if (NX <= 0 || NY <= 0)
     {
         if (rank == 0)
@@ -289,7 +290,7 @@ int main(int argc, char *argv[])
     // of the grid with values that indicate their original position in
     // the grid.  We assume that nx and ny are each less than 100 so the
     // values in the grid can have the form R.XXYY where
-    //  - R is the rank of of the process that created the data,
+    //  - R is the rank of the process that created the data,
     //  - XX is the x coordinate in the grid (0 is at left), and
     //  - YY is the y coordinate in the grid (0 is at bottom)
 

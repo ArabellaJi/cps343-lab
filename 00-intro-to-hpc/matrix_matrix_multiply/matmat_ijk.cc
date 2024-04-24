@@ -15,7 +15,7 @@
 #include <time.h>
 
 #if !defined(N)
-# define N 500  // default matrix dimension
+# define N 800  // default matrix dimension
 #endif
 
 #define IDX(i,j,stride) ((i)*(stride)+(j)) // row-major
@@ -56,7 +56,10 @@ void matmat_ikj(double* c, double* a, double* b, int n)
     for (int i = 0; i < n * n; i++)
         c[i] = 0.0;
 
-    // REPLACE THIS COMMENT WITH CODE TO COMPUTE PRODUCT
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++)
+            for (int j = 0; j < n; j++)
+                c[IDX(i,j,n)] += a[IDX(i,k,n)] * b[IDX(k,j,n)];
 }
 
 //----------------------------------------------------------------------------
@@ -68,7 +71,10 @@ void matmat_jik(double* c, double* a, double* b, int n)
     for (int i = 0; i < n * n; i++)
         c[i] = 0.0;
 
-    // REPLACE THIS COMMENT WITH CODE TO COMPUTE PRODUCT
+    for (int j = 0; j < n; j++)
+        for (int i = 0; i < n; i++)
+            for (int k = 0; k < n; k++)
+                c[IDX(i,j,n)] += a[IDX(i,k,n)] * b[IDX(k,j,n)];
 }
 
 //----------------------------------------------------------------------------
@@ -79,8 +85,11 @@ void matmat_jki(double* c, double* a, double* b, int n)
     // initialize result matrix to zero
     for (int i = 0; i < n * n; i++)
         c[i] = 0.0;
- 
-    // REPLACE THIS COMMENT WITH CODE TO COMPUTE PRODUCT
+
+    for (int j = 0; j < n; j++)
+        for (int k = 0; k < n; k++)
+            for (int i = 0; i < n; i++)
+                c[IDX(i,j,n)] += a[IDX(i,k,n)] * b[IDX(k,j,n)];
 }
 
 //----------------------------------------------------------------------------
@@ -92,7 +101,10 @@ void matmat_kij(double* c, double* a, double* b, int n)
     for (int i = 0; i < n * n; i++)
         c[i] = 0.0;
 
-    // REPLACE THIS COMMENT WITH CODE TO COMPUTE PRODUCT
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                c[IDX(i,j,n)] += a[IDX(i,k,n)] * b[IDX(k,j,n)];
 }
 
 //----------------------------------------------------------------------------
@@ -104,7 +116,10 @@ void matmat_kji(double* c, double* a, double* b, int n)
     for (int i = 0; i < n * n; i++)
         c[i] = 0.0;
 
-    // REPLACE THIS COMMENT WITH CODE TO COMPUTE PRODUCT
+    for (int k = 0; k < n; k++)
+        for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i++)
+                c[IDX(i,j,n)] += a[IDX(i,k,n)] * b[IDX(k,j,n)];
 }
 
 //----------------------------------------------------------------------------
@@ -134,7 +149,7 @@ int main(int argc, char* argv[])
     double* a = new double [N * N];
     double* b = new double [N * N];
     double* c = new double [N * N];
-    
+
     // initialize matrices
     srandom((unsigned int) time(NULL));
     for (int i = 0; i < N * N; i++)
@@ -198,3 +213,4 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+

@@ -22,29 +22,34 @@ const int    N_MIN =  1;
 const int    N_MAX = 10;
 const double X_MIN =  1.0;
 const double X_MAX = 20.0;
+const int    M_MIN =  100000;
+const int    M_MAX = 1000000;
 
 int main(int argc, char **argv)
 {
     int    n = 1;     /* default value */
     double x = 1.0;   /* default value */
+    int    m = 100000;     /* default value */
 
 #if defined(ARGS_REQUIRED)
     /*
-     * we require two arguments on command line (argv[0] is program name)
+     * we require three arguments on command line (argv[0] is program name)
      */
-    if (argc < 3)
+    if (argc < 4)
     {
-        fprintf(stderr, "usage: %s N X\n", argv[0]);
+        fprintf(stderr, "usage: %s N X M\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     n = atoi(argv[1]);
     x = atof(argv[2]);
+    m = atol(argv[3]);
 #else
     /*
      * both arguments are optional but if x is specified n must also appear
      */
     if (argc > 1) n = atoi(argv[1]);
     if (argc > 2) x = atof(argv[2]);
+    if (argc > 3) m = atol(argv[3]);
 #endif
 
     /*
@@ -62,11 +67,17 @@ int main(int argc, char **argv)
                 x, X_MIN, X_MAX);
         exit(EXIT_FAILURE);
     }
+    if (m < M_MIN || M_MAX < m)
+    {
+        fprintf(stderr, "m = %d but must satisfy %d <= n <= %d\n",
+                m, M_MIN, M_MAX);
+        exit(EXIT_FAILURE);
+    }
 
     /*
      * okay, we're good to go!
      */
-    printf("n = %d, x = %f\n", n, x);
+    printf("n = %d, x = %f, m = %d\n", n, x, m);
 
     return 0;
 }
