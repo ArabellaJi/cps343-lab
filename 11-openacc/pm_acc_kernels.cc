@@ -1,5 +1,5 @@
 /*
- * $Smake: nvc++ -fast -o %F %f -lhdf5
+ * $Smake: nvc++ -fast -Minfo=accel -acc=gpu -gpu=cc61,cc75,cc80 -o %F %f -lhdf5
  *
  * Power Method
  */
@@ -119,13 +119,14 @@ double vectorNorm(
 
 // Matrix-vector product
 void matrixVectorProduct(
-    double* y,          // out - m-element result vector
+    double* restrict y,          // out - m-element result vector
     double* a,          // in  - mxn matrix (stored as 1-D array)
     double* x,          // in  - n-element vector
     int m,              // in  - row dimension of matrix, length of y
     int n               // in  - col dimension of matrix, length of x
     )
 {
+    #pragma acc kernels
     for (int i = 0; i < m; i++)
     {
         double sum = 0.0;
@@ -235,6 +236,7 @@ int main(int argc, char* argv[])
     num_iter = 0;
     delta = fabs(lambda - lambda_prev);
     t1 = wtime();
+    #pragma acc data copyin(A[0:n*n],x[n]) create(y[n])
     while (delta > tol && num_iter++ < max_iter)
     {
         // compute new eigenvector estimate y := A*x

@@ -1,5 +1,5 @@
 /*
- * $Smake: nvc++ -fast -o %F %f -lhdf5
+ * $Smake: nvc++ -fast -Minfo=accel -acc=gpu -gpu=cc61,cc75,cc80,managed -o %F %f -lhdf5
  *
  * Power Method
  */
@@ -126,9 +126,11 @@ void matrixVectorProduct(
     int n               // in  - col dimension of matrix, length of x
     )
 {
+    #pragma acc parallel loop
     for (int i = 0; i < m; i++)
     {
         double sum = 0.0;
+        #pragma acc loop reduction(+:sum)
         for (int j = 0; j < n; j++)
         {
             sum += a[IDX(i,j,n)] * x[j];
